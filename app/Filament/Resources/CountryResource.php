@@ -2,16 +2,18 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CountryResource\Pages;
-use App\Filament\Resources\CountryResource\RelationManagers;
-use App\Models\Country;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Country;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\CountryResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\CountryResource\RelationManagers;
 
 class CountryResource extends Resource
 {
@@ -33,7 +35,7 @@ class CountryResource extends Resource
     {
         return $form
             ->schema([
-                //
+                TextInput::make('name'),
             ]);
     }
 
@@ -41,7 +43,7 @@ class CountryResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('name')->label('Countries')->searchable()->sortable(),
             ])
             ->filters([
                 //
