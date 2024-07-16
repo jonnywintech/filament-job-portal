@@ -6,6 +6,7 @@ use App\Filament\Resources\EmployeeResource\Pages;
 use App\Filament\Resources\EmployeeResource\RelationManagers;
 use App\Models\Employee;
 use Filament\Forms;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -23,37 +24,51 @@ class EmployeeResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('country_id')
+                Section::make('User Name')
+                    ->description('Put the user name details in.')
+                    ->schema([
+                        Forms\Components\TextInput::make('first_name')->label('First Name')
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('last_name')->label('Last Name')
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('middle_name')->label('Middle Name')
+                            ->required()
+                            ->maxLength(255),
+                    ])->columns(3),
+                Section::make('User Address')
+                    ->schema([
+                        Forms\Components\TextInput::make('country_id')->label('Country')
+                            ->required()
+                            ->numeric(),
+                        Forms\Components\TextInput::make('state_id')->label('State')
+                            ->required()
+                            ->numeric(),
+                        Forms\Components\TextInput::make('city_id')->label('City')
+                            ->required()
+                            ->numeric(),
+                        Forms\Components\TextInput::make('zip_code')
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('address')
+                            ->required()
+                            ->maxLength(255)->columnSpan(2),
+
+                    ])->columns(3),
+                Section::make('Section')->schema([
+                    Forms\Components\TextInput::make('department_id')->label('Department')
                     ->required()
                     ->numeric(),
-                Forms\Components\TextInput::make('state_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('city_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('department_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('first_name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('last_name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('middle_name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('address')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('zip_code')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\DatePicker::make('date_of_birth')
-                    ->required(),
-                Forms\Components\DatePicker::make('date_hired')
-                    ->required(),
+                ]),
+
+
+                Section::make('Date')->schema([
+                    Forms\Components\DatePicker::make('date_of_birth')
+                        ->required(),
+                    Forms\Components\DatePicker::make('date_hired')
+                        ->required(),
+                ])->columns(2),
             ]);
     }
 
