@@ -2,17 +2,21 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\EmployeeResource\Pages;
-use App\Filament\Resources\EmployeeResource\RelationManagers;
-use App\Models\Employee;
 use Filament\Forms;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
+use App\Models\City;
 use Filament\Tables;
+use App\Models\State;
+use Filament\Forms\Get;
+use App\Models\Employee;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Illuminate\Support\Collection;
+use Filament\Forms\Components\Section;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\EmployeeResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\EmployeeResource\RelationManagers;
 
 class EmployeeResource extends Resource
 {
@@ -36,20 +40,30 @@ class EmployeeResource extends Resource
                             ->required()
                             ->maxLength(255),
                         Forms\Components\TextInput::make('middle_name')->label('Middle Name')
-                            ->required()
                             ->maxLength(255),
                     ])->columns(3),
                 Section::make('User Address')
                     ->schema([
-                        Forms\Components\TextInput::make('country_id')->label('Country')
-                            ->required()
-                            ->numeric(),
-                        Forms\Components\TextInput::make('state_id')->label('State')
-                            ->required()
-                            ->numeric(),
-                        Forms\Components\TextInput::make('city_id')->label('City')
-                            ->required()
-                            ->numeric(),
+                        Forms\Components\Select::make('country_id')->label('Country')
+                            ->relationship('country', 'name')
+                                ->live()
+                            ->searchable()
+                            ->preload()
+                            ->required(),
+                        Forms\Components\Select::make('state_id')->label('State')
+                        ->options(fn (Get $get): Collection => State::query()
+                        ->where('country_id', $get('country_id'))
+                        ->pluck('name', 'id'))
+                            ->preload()
+                            ->required(),
+                        Forms\Components\Select::make('city_id')->label('City')
+                            ->options(fn (Get $get): Collection => City::query()
+                                ->where('state_id', $get('state_id'))
+                                ->pluck('name', 'id'))
+                                ->live()
+                            ->searchable()
+                            ->preload()
+                            ->required(),
                         Forms\Components\TextInput::make('zip_code')
                             ->required()
                             ->maxLength(255),
@@ -60,8 +74,8 @@ class EmployeeResource extends Resource
                     ])->columns(3),
                 Section::make('Section')->schema([
                     Forms\Components\TextInput::make('department_id')->label('Department')
-                    ->required()
-                    ->numeric(),
+                        ->required()
+                        ->numeric(),
                 ]),
 
 
