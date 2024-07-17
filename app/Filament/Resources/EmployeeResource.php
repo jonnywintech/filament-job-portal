@@ -7,6 +7,7 @@ use App\Models\City;
 use Filament\Tables;
 use App\Models\State;
 use Filament\Forms\Get;
+use Filament\Forms\Set;
 use App\Models\Employee;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
@@ -46,21 +47,28 @@ class EmployeeResource extends Resource
                     ->schema([
                         Forms\Components\Select::make('country_id')->label('Country')
                             ->relationship('country', 'name')
-                                ->live()
+                            ->live()
+                            ->afterStateUpdated(function (Set $set) {
+                                $set('city_id', null);
+                                $set('state_id', null);
+                            })
                             ->searchable()
                             ->preload()
                             ->required(),
                         Forms\Components\Select::make('state_id')->label('State')
-                        ->options(fn (Get $get): Collection => State::query()
-                        ->where('country_id', $get('country_id'))
-                        ->pluck('name', 'id'))
+                            ->options(fn (Get $get): Collection => State::query()
+                                ->where('country_id', $get('country_id'))
+                                ->pluck('name', 'id'))
+                            ->afterStateUpdated(fn (Set $set) => $set('city_id', null))
+                            ->searchable()
+                            ->live()
                             ->preload()
                             ->required(),
                         Forms\Components\Select::make('city_id')->label('City')
                             ->options(fn (Get $get): Collection => City::query()
                                 ->where('state_id', $get('state_id'))
                                 ->pluck('name', 'id'))
-                                ->live()
+                            ->live()
                             ->searchable()
                             ->preload()
                             ->required(),
