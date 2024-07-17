@@ -81,9 +81,11 @@ class EmployeeResource extends Resource
 
                     ])->columns(3),
                 Section::make('Section')->schema([
-                    Forms\Components\TextInput::make('department_id')->label('Department')
-                        ->required()
-                        ->numeric(),
+                    Forms\Components\Select::make('department_id')->label('Department')
+                        ->relationship('department', 'name')
+                        ->searchable()
+                        ->lazy()
+                        ->required(),
                 ]),
 
 
