@@ -36,6 +36,8 @@ class CountryResource extends Resource
         return $form
             ->schema([
                 TextInput::make('name'),
+                TextInput::make('code')->label('Country Code'),
+                TextInput::make('phonecode')->label('Call Code'),
             ]);
     }
 
@@ -44,6 +46,15 @@ class CountryResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')->label('Countries')->searchable()->sortable(),
+                TextColumn::make('code')->label('Countries')
+                    ->label('Country Code')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('phonecode')->label('Countries')
+                    ->prefix('+')
+                    ->label('Call Code')
+                    ->searchable()
+                    ->sortable(),
             ])
             ->filters([
                 //

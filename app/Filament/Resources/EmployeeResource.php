@@ -84,7 +84,7 @@ class EmployeeResource extends Resource
                     Forms\Components\Select::make('department_id')->label('Department')
                         ->relationship('department', 'name')
                         ->searchable()
-                        ->lazy()
+                        ->preload()
                         ->required(),
                 ]),
 
