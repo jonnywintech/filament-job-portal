@@ -11,6 +11,8 @@ use Filament\Forms\Set;
 use App\Models\Employee;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Infolists\Infolist;
+use Filament\Infolists;
 use Filament\Resources\Resource;
 use Illuminate\Support\Collection;
 use Filament\Forms\Components\Section;
@@ -164,6 +166,33 @@ class EmployeeResource extends Resource
                 ]),
             ]);
     }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist->schema([
+           Infolists\Components\Section::make('User Details')
+                ->schema([
+                   Infolists\Components\TextEntry::make('first_name')->label('First Name'),
+                   Infolists\Components\TextEntry::make('last_name')->label('Last Name'),
+                   Infolists\Components\TextEntry::make('middle_name')->label('Middle Name'),
+                ])->columns(3),
+           Infolists\Components\Section::make('User Address')
+                ->schema([
+                   Infolists\Components\TextEntry::make('country.name')->label('Country Name'),
+                   Infolists\Components\TextEntry::make('state.name')->label('State Name'),
+                   Infolists\Components\TextEntry::make('city.name')->label('City Name'),
+                   Infolists\Components\TextEntry::make('zip_code'),
+                   Infolists\Components\TextEntry::make('address')->columnSpan(2),
+                   Infolists\Components\TextEntry::make('department.name'),
+                ])->columns(3),
+           Infolists\Components\Section::make('Date')
+                ->schema([
+                   Infolists\Components\TextEntry::make('date_of_birth'),
+                   Infolists\Components\TextEntry::make('date_hired'),
+                ])->columns(2),
+        ]);
+    }
+
 
     public static function getRelations(): array
     {
