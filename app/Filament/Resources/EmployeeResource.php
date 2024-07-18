@@ -8,15 +8,18 @@ use Filament\Tables;
 use App\Models\State;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
+use Filament\Infolists;
 use App\Models\Employee;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Infolists\Infolist;
-use Filament\Infolists;
 use Filament\Resources\Resource;
 use Illuminate\Support\Collection;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Resources\Pages\ListRecords\Tab;
 use App\Filament\Resources\EmployeeResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\EmployeeResource\RelationManagers;
@@ -154,7 +157,11 @@ class EmployeeResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                SelectFilter::make('department')
+                ->relationship('department', 'name')
+                ->searchable()
+                ->preload()
+                ->label('Select Department'),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
