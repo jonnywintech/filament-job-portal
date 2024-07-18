@@ -17,6 +17,7 @@ use Filament\Resources\Resource;
 use Illuminate\Support\Collection;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
+use Illuminate\Database\Eloquent\Model;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Resources\Pages\ListRecords\Tab;
@@ -31,6 +32,39 @@ class EmployeeResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
     protected static ?string $navigationGroup = 'Employee Management';
+
+    protected static ?string $recordTitleAttribute = 'first_name';
+
+    public static function getGlobalSearchResultTitle(Model $record): string
+    {
+        return $record->last_name;
+    }
+
+    public static function getGloballSearchableAttributes(): array
+    {
+        return ['first_name', 'last_name', 'middle_name', 'country.name'];
+        // relationship with dot notation
+    }
+
+    public static function getGlobalSearchResultDetails(Model $record): array
+    {
+        return ['Country' => $record->country->name];
+    }
+
+    public static function getGlobalSearchEloquentQuery(): Builder
+    {
+        return parent::getGlobalSearchEloquentQuery()->with(['country']);
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
+    public static function getNavigationBadgeColor(): string|array|null
+    {
+        return static::getModel()::count() > 5 ? 'warning' : 'success';
+    }
 
     public static function form(Form $form): Form
     {
@@ -158,10 +192,10 @@ class EmployeeResource extends Resource
             ])
             ->filters([
                 SelectFilter::make('department')
-                ->relationship('department', 'name')
-                ->searchable()
-                ->preload()
-                ->label('Select Department'),
+                    ->relationship('department', 'name')
+                    ->searchable()
+                    ->preload()
+                    ->label('Select Department'),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
@@ -177,25 +211,25 @@ class EmployeeResource extends Resource
     public static function infolist(Infolist $infolist): Infolist
     {
         return $infolist->schema([
-           Infolists\Components\Section::make('User Details')
+            Infolists\Components\Section::make('User Details')
                 ->schema([
-                   Infolists\Components\TextEntry::make('first_name')->label('First Name'),
-                   Infolists\Components\TextEntry::make('last_name')->label('Last Name'),
-                   Infolists\Components\TextEntry::make('middle_name')->label('Middle Name'),
+                    Infolists\Components\TextEntry::make('first_name')->label('First Name'),
+                    Infolists\Components\TextEntry::make('last_name')->label('Last Name'),
+                    Infolists\Components\TextEntry::make('middle_name')->label('Middle Name'),
                 ])->columns(3),
-           Infolists\Components\Section::make('User Address')
+            Infolists\Components\Section::make('User Address')
                 ->schema([
-                   Infolists\Components\TextEntry::make('country.name')->label('Country Name'),
-                   Infolists\Components\TextEntry::make('state.name')->label('State Name'),
-                   Infolists\Components\TextEntry::make('city.name')->label('City Name'),
-                   Infolists\Components\TextEntry::make('zip_code'),
-                   Infolists\Components\TextEntry::make('address')->columnSpan(2),
-                   Infolists\Components\TextEntry::make('department.name'),
+                    Infolists\Components\TextEntry::make('country.name')->label('Country Name'),
+                    Infolists\Components\TextEntry::make('state.name')->label('State Name'),
+                    Infolists\Components\TextEntry::make('city.name')->label('City Name'),
+                    Infolists\Components\TextEntry::make('zip_code'),
+                    Infolists\Components\TextEntry::make('address')->columnSpan(2),
+                    Infolists\Components\TextEntry::make('department.name'),
                 ])->columns(3),
-           Infolists\Components\Section::make('Date')
+            Infolists\Components\Section::make('Date')
                 ->schema([
-                   Infolists\Components\TextEntry::make('date_of_birth'),
-                   Infolists\Components\TextEntry::make('date_hired'),
+                    Infolists\Components\TextEntry::make('date_of_birth'),
+                    Infolists\Components\TextEntry::make('date_hired'),
                 ])->columns(2),
         ]);
     }
