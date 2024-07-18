@@ -23,9 +23,9 @@ class CountryResource extends Resource
 
     protected static ?string $navigationLabel = 'Country';
 
-    protected static ?string $modelLabel = 'Employees Countres';
+    protected static ?string $modelLabel = 'Employees Countries';
 
-    protected static ?string $navigationGroup = 'System Managment';
+    protected static ?string $navigationGroup = 'System Management';
 
     protected static ?string $slug = 'employees-countries';
 

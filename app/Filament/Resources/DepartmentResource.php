@@ -19,7 +19,7 @@ class DepartmentResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
 
-    protected static ?string $navigationGroup = 'System Managment';
+    protected static ?string $navigationGroup = 'System Management';
 
     protected static ?int $navigationSort = 4;
 

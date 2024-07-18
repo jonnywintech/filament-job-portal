@@ -21,7 +21,7 @@ class CityResource extends Resource
 
     protected static ?string $navigationLabel = 'City';
 
-    protected static ?string $navigationGroup = 'System Managment';
+    protected static ?string $navigationGroup = 'System Management';
 
     protected static ?int $navigationSort = 2;
 
