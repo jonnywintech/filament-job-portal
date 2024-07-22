@@ -17,16 +17,16 @@ class DepartmentSeeder extends Seeder
 
 
         $data = array(
-           'name' => 'Human Resources',
-           'name' => 'Finance',
-           'name' => 'IT',
-           'name' => 'Marketing',
-           'name' => 'Sales',
-           'name' => 'Customer Service',
-           'name' => 'Research and Development',
-           'name' => 'Legal',
-           'name' => 'Operations',
-           'name' => 'Administration'
+           array('name' => 'Human Resources'),
+           array('name' => 'Finance'),
+           array('name' => 'IT'),
+           array('name' => 'Marketing'),
+           array('name' => 'Sales'),
+           array('name' => 'Customer Service'),
+           array('name' => 'Research and Development'),
+           array('name' => 'Legal'),
+           array('name' => 'Operations'),
+           array('name' => 'Administration'),
         );
 
         DB::table('departments')->insert($data);

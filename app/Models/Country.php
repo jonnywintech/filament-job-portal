@@ -26,4 +26,9 @@ class Country extends Model
     {
         return $this->hasMany(Employee::class);
     }
+
+    public function team(): HasMany
+    {
+        return $this->hasMany(Team::class);
+    }
 }

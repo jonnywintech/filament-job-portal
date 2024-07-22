@@ -19,7 +19,7 @@ class EmployeeFactory extends Factory
     public function definition(): array
     {
         $location = $this->getData();
-        $department = Department::inRandomOrder()->first();
+        // $department = Department::inRandomOrder()->first();
 
         return [
             'first_name' => fake()->firstName(),
@@ -29,7 +29,7 @@ class EmployeeFactory extends Factory
             'state_id' => $location['state']->id,
             'city_id' => $location['city']->id,
             'address' => fake()->address,
-            'department_id' => $department->id,
+            // 'department_id' => $department->id,
             'zip_code' => fake()->postcode,
             'date_of_birth' => fake()->date('Y-m-d'),
             'date_hired' => fake()->dateTimeBetween('-1 year', 'now')->format('Y-m-d'),
