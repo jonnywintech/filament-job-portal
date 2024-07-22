@@ -26,6 +26,7 @@ class User extends Authenticatable implements  HasTenants
         'email',
         'password',
         'team_id',
+        'is_admin',
     ];
 
     /**
@@ -48,6 +49,7 @@ class User extends Authenticatable implements  HasTenants
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_admin' => 'boolean',
         ];
     }
 
